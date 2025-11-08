@@ -41,3 +41,27 @@ nav a {
     padding: 10px;
     margin: 5px;
 }
+
+/* Hero background using Volvo-Buses.jpg (place the image in /assets/images/) */
+.hero {
+    position: relative;
+    /* overlay gradient for readability + image */
+    background-image: linear-gradient(rgba(3,37,65,0.45), rgba(3,37,65,0.45)), url('/assets/images/Volvo-Buses.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero .container { /* ensure text stays readable */
+    position: relative;
+    z-index: 2;
+}
+
+.hero::before {
+    /* subtle dark overlay if needed */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: 1;
+}
