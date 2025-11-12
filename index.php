@@ -1,3 +1,11 @@
+<?php
+// Start session early so we can render nav based on login state
+session_start();
+$is_logged_in = isset($_SESSION['user_id']);
+$user_name = $is_logged_in ? ($_SESSION['user_name'] ?? '') : '';
+$is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,13 +96,20 @@
       <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>
       <ul class="hidden md:flex space-x-8">
         <li><a href="#home" class="hover:text-purple-400 transition">Home</a></li>
-        <li><a href="#search" class="hover:text-purple-400 transition">Book Now</a></li>
+        <li><a href="#search" class="hover:text-purple-400 transition">Search</a></li>
         <li><a href="#features" class="hover:text-purple-400 transition">Features</a></li>
         <li><a href="#about" class="hover:text-purple-400 transition">About</a></li>
+        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
+        <li><a href="profile.php" class="hover:text-purple-400 transition">Profile</a></li>
       </ul>
       <div class="flex space-x-4">
-        <a href="login.php" class="px-4 py-2 hover:text-purple-400 transition">Login</a>
-        <a href="register.php" class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Register</a>
+        <?php if ($is_logged_in): ?>
+          <span class="px-4 py-2">Welcome, <?php echo htmlspecialchars($user_name); ?></span>
+          <a href="logout.php" class="px-4 py-2 hover:text-purple-400 transition">Logout</a>
+        <?php else: ?>
+          <a href="login.php" class="px-4 py-2 hover:text-purple-400 transition">Login</a>
+          <a href="register.php" class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Register</a>
+        <?php endif; ?>
       </div>
     </div>
   </nav>

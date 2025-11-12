@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once 'backend/config.php';
@@ -29,58 +30,117 @@ $result = $stmt->get_result();
 $bus = $result->fetch_assoc();
 
 $total_amount = count($seats) * $bus['fare'];
+
+// ✅ Generate booking ID once per session (so it doesn’t change on refresh)
+if (!isset($_SESSION['booking_id'])) {
+    $_SESSION['booking_id'] = rand(100000, 999999);
+}
+$booking_id = $_SESSION['booking_id'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Ticket</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BusGo Ticket - Booking Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+    * { font-family: 'Inter', sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .ticket-shadow {
+      box-shadow: 0 10px 30px rgba(118, 75, 162, 0.3);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body>
 
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg border-t-8 border-blue-700">
-        <div class="p-6">
-            <h1 class="text-3xl font-bold text-blue-700 text-center mb-6">Bus Booking Ticket</h1>
-            
-            <div class="border-b border-gray-300 pb-4 mb-4">
-                <p class="text-lg font-semibold">Passenger: <span class="font-normal"><?php echo htmlspecialchars($user_name); ?></span></p>
-                <p class="text-lg font-semibold">Booking Date: <span class="font-normal"><?php echo date('d M Y', strtotime($date)); ?></span></p>
-                <p class="text-lg font-semibold">Booking ID: <span class="font-normal text-gray-600">#<?php echo rand(100000, 999999); ?></span></p>
-            </div>
+  <div class="glass-card rounded-2xl w-full max-w-2xl p-8 ticket-shadow border-t-4 border-purple-500 fade-in-up">
+    <h1 class="text-3xl font-extrabold gradient-text text-center mb-8">🎫 BusGo Ticket Confirmation</h1>
 
-            <div class="mb-4">
-                <p class="text-xl font-bold text-gray-800 mb-2"><?php echo htmlspecialchars($bus['bus_name']); ?></p>
-                <div class="grid grid-cols-2 gap-2 text-gray-700">
-                    <p><strong>Bus No:</strong> <?php echo htmlspecialchars($bus['bus_number']); ?></p>
-                    <p><strong>Route:</strong> <?php echo htmlspecialchars($bus['from_location']); ?> → <?php echo htmlspecialchars($bus['to_location']); ?></p>
-                    <p><strong>Departure:</strong> <?php echo date('h:i A', strtotime($bus['departure_time'])); ?></p>
-                    <p><strong>Arrival:</strong> <?php echo date('h:i A', strtotime($bus['arrival_time'])); ?></p>
-                </div>
-            </div>
-
-            <div class="mb-4 bg-gray-50 p-4 rounded-lg">
-                <p class="font-semibold text-gray-800 mb-1">Selected Seats:</p>
-                <p class="text-blue-700 font-bold text-lg">
-                    <?php echo implode(', ', array_map('htmlspecialchars', $seats)); ?>
-                </p>
-            </div>
-
-            <div class="flex justify-between items-center border-t border-gray-300 pt-4">
-                <p class="text-lg font-semibold text-gray-800">Total Fare</p>
-                <p class="text-xl font-bold text-blue-700">Rs. <?php echo number_format($total_amount, 2); ?></p>
-            </div>
-
-            <div class="text-center mt-6">
-                <a href="index.php" class="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition">Back to Home</a>
-            </div>
-        </div>
-
-        <div class="bg-gray-200 h-10 rounded-b-xl flex items-center justify-center text-gray-600 text-sm tracking-wider">
-            Thank you for booking with BusBooking System
-        </div>
+    <!-- Passenger Info -->
+    <div class="border-b border-white/10 pb-4 mb-6">
+      <p class="text-lg font-semibold">👤 Passenger: 
+        <span class="font-normal text-gray-300"><?php echo htmlspecialchars($user_name); ?></span>
+      </p>
+      <p class="text-lg font-semibold">📅 Booking Date: 
+        <span class="font-normal text-gray-300"><?php echo date('d M Y', strtotime($date)); ?></span>
+      </p>
+      <p class="text-lg font-semibold">🆔 Booking ID: 
+        <span class="font-normal text-purple-400">#<?php echo $booking_id; ?>
+</span>
+      </p>
     </div>
+
+    <!-- Bus Details -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-purple-400 mb-3"><?php echo htmlspecialchars($bus['bus_name']); ?></h2>
+      <div class="grid grid-cols-2 gap-3 text-gray-300">
+        <p><strong>🚌 Bus No:</strong> <?php echo htmlspecialchars($bus['bus_number']); ?></p>
+        <p><strong>📍 Route:</strong> <?php echo htmlspecialchars($bus['from_location']); ?> → <?php echo htmlspecialchars($bus['to_location']); ?></p>
+        <p><strong>⏰ Departure:</strong> <?php echo date('h:i A', strtotime($bus['departure_time'])); ?></p>
+        <p><strong>🕓 Arrival:</strong> <?php echo date('h:i A', strtotime($bus['arrival_time'])); ?></p>
+      </div>
+    </div>
+
+    <!-- Selected Seats -->
+    <div class="bg-white/10 p-4 rounded-xl border border-white/10 mb-6">
+      <p class="font-semibold text-gray-200 mb-1">🎟️ Selected Seats:</p>
+      <p class="text-purple-400 font-bold text-lg">
+        <?php echo implode(', ', array_map('htmlspecialchars', $seats)); ?>
+      </p>
+    </div>
+
+    <!-- Fare -->
+    <div class="flex justify-between items-center border-t border-white/10 pt-4">
+      <p class="text-lg font-semibold text-gray-200">Total Fare</p>
+      <p class="text-2xl font-bold text-purple-400">Rs. <?php echo number_format($total_amount, 2); ?></p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="text-center mt-8">
+      <a href="index.php" 
+         class="inline-block gradient-bg text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition transform hover:-translate-y-1">
+         Back to Home
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-8 text-gray-400 text-sm border-t border-white/10 pt-3">
+      Thank you for booking with <span class="gradient-text font-semibold">BusGo</span> 🚌<br>
+      Have a safe and comfortable journey!
+    </div>
+  </div>
 
 </body>
 </html>
+

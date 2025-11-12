@@ -2,27 +2,34 @@
 session_start();
 require_once '../backend/config.php';
 
-// Only allow admin
+// ✅ Only allow admin access
 if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
     header("Location: ../login.php");
     exit();
 }
 
-// Handle route addition
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_route'])) {
-    $start = trim($_POST['start_point']);
-    $end = trim($_POST['end_point']);
+// ✅ Add new route
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_route'])) {
+    $from_location = trim($_POST['from_location']);
+    $to_location = trim($_POST['to_location']);
+    $departure_time = $_POST['departure_time'];
+    $arrival_time = $_POST['arrival_time'];
     $fare = floatval($_POST['fare']);
-    if ($start && $end && $fare > 0) {
-        $stmt = $conn->prepare("INSERT INTO routes (start_point, end_point, fare) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssd", $start, $end, $fare);
+
+    if ($from_location && $to_location && $departure_time && $arrival_time && $fare > 0) {
+        $stmt = $conn->prepare("
+            INSERT INTO routes (from_location, to_location, departure_time, arrival_time, fare) 
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("ssssd", $from_location, $to_location, $departure_time, $arrival_time, $fare);
         $stmt->execute();
     }
+
     header("Location: routes.php");
     exit();
 }
 
-// Handle deletion
+// ✅ Delete route
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $conn->query("DELETE FROM routes WHERE id = $id");
@@ -30,9 +37,10 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Fetch routes
+// ✅ Fetch all routes
 $routes = $conn->query("SELECT * FROM routes ORDER BY id DESC");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,9 +75,11 @@ $routes = $conn->query("SELECT * FROM routes ORDER BY id DESC");
         <!-- Add Route Form -->
         <div class="bg-white rounded-lg shadow p-6 mb-8">
             <h3 class="text-xl font-semibold mb-4 text-gray-700">Add New Route</h3>
-            <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" name="start_point" placeholder="Start Point" required class="p-2 border rounded focus:outline-blue-500">
-                <input type="text" name="end_point" placeholder="End Point" required class="p-2 border rounded focus:outline-blue-500">
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input type="text" name="from_location" placeholder="From Location" required class="p-2 border rounded focus:outline-blue-500">
+                <input type="text" name="to_location" placeholder="To Location" required class="p-2 border rounded focus:outline-blue-500">
+                <input type="time" name="departure_time" required class="p-2 border rounded focus:outline-blue-500">
+                <input type="time" name="arrival_time" required class="p-2 border rounded focus:outline-blue-500">
                 <input type="number" step="0.01" name="fare" placeholder="Fare (Rs.)" required class="p-2 border rounded focus:outline-blue-500">
                 <button type="submit" name="add_route" class="col-span-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Add Route</button>
             </form>
@@ -82,11 +92,13 @@ $routes = $conn->query("SELECT * FROM routes ORDER BY id DESC");
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="border px-4 py-2 text-left">#</th>
-                            <th class="border px-4 py-2 text-left">Start Point</th>
-                            <th class="border px-4 py-2 text-left">End Point</th>
-                            <th class="border px-4 py-2 text-left">Fare (Rs.)</th>
-                            <th class="border px-4 py-2 text-left">Actions</th>
+                            <th class="border px-4 py-2">#</th>
+                            <th class="border px-4 py-2">From</th>
+                            <th class="border px-4 py-2">To</th>
+                            <th class="border px-4 py-2">Departure</th>
+                            <th class="border px-4 py-2">Arrival</th>
+                            <th class="border px-4 py-2">Fare (Rs.)</th>
+                            <th class="border px-4 py-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,10 +106,13 @@ $routes = $conn->query("SELECT * FROM routes ORDER BY id DESC");
                         if ($routes->num_rows > 0) {
                             $i = 1;
                             while ($r = $routes->fetch_assoc()) {
-                                echo "<tr class='hover:bg-gray-50'>
+                                echo "
+                                <tr class='hover:bg-gray-50'>
                                     <td class='border px-4 py-2'>{$i}</td>
-                                    <td class='border px-4 py-2'>{$r['start_point']}</td>
-                                    <td class='border px-4 py-2'>{$r['end_point']}</td>
+                                    <td class='border px-4 py-2'>{$r['from_location']}</td>
+                                    <td class='border px-4 py-2'>{$r['to_location']}</td>
+                                    <td class='border px-4 py-2'>{$r['departure_time']}</td>
+                                    <td class='border px-4 py-2'>{$r['arrival_time']}</td>
                                     <td class='border px-4 py-2'>Rs. {$r['fare']}</td>
                                     <td class='border px-4 py-2'>
                                         <a href='edit-route.php?id={$r['id']}' class='text-blue-600 hover:underline'>Edit</a> | 
@@ -107,7 +122,7 @@ $routes = $conn->query("SELECT * FROM routes ORDER BY id DESC");
                                 $i++;
                             }
                         } else {
-                            echo "<tr><td colspan='5' class='text-center text-gray-500 py-4'>No routes found</td></tr>";
+                            echo "<tr><td colspan='7' class='text-center text-gray-500 py-4'>No routes found</td></tr>";
                         }
                         ?>
                     </tbody>

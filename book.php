@@ -46,152 +46,197 @@ while ($row = $booked_result->fetch_assoc()) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Seats - Bus Booking System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .seat {
-            width: 40px;
-            height: 40px;
-            margin: 4px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #4B5563;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        .seat:hover:not(.booked) {
-            border-color: #2563EB;
-            background-color: #DBEAFE;
-        }
-        .seat.selected {
-            background-color: #2563EB;
-            border-color: #2563EB;
-            color: white;
-        }
-        .seat.booked {
-            background-color: #E5E7EB;
-            border-color: #9CA3AF;
-            color: #9CA3AF;
-            cursor: not-allowed;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Seats - BusGo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0f0f1e;
+      color: #fff;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .seat {
+      width: 45px;
+      height: 45px;
+      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #ddd;
+    }
+
+    .seat:hover:not(.booked) {
+      background: rgba(118, 75, 162, 0.3);
+      transform: scale(1.1);
+    }
+
+    .seat.selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border-color: #764ba2;
+      box-shadow: 0 0 10px #764ba2;
+    }
+
+    .seat.booked {
+      background: rgba(255, 255, 255, 0.08);
+      color: #777;
+      border-color: rgba(255, 255, 255, 0.1);
+      cursor: not-allowed;
+    }
+
+    .nav-blur {
+      background: rgba(15, 15, 30, 0.9);
+      backdrop-filter: blur(10px);
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
 
-    <!-- Navbar -->
-    <nav class="bg-blue-700 text-white p-4 mb-8">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.php" class="text-2xl font-bold">BusBooking</a>
-            <div class="space-x-4">
-                <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
-                <a href="backend/logout.php" class="hover:text-gray-200">Logout</a>
-            </div>
+<body>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+      <a href="index.php" class="text-2xl font-bold gradient-text">🚌 BusGo</a>
+      <div class="flex items-center space-x-4 text-gray-200">
+        <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
+        <a href="backend/logout.php" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto pt-28 px-4 pb-16">
+
+    <!-- Bus Info -->
+    <div class="glass-card p-8 rounded-2xl mb-10 shadow-lg">
+      <h2 class="text-3xl font-bold mb-6 gradient-text">Select Your Seats</h2>
+      <div class="grid md:grid-cols-2 gap-8 text-gray-300">
+        <div>
+          <p class="text-lg font-semibold text-white"><?php echo htmlspecialchars($bus['bus_name']); ?></p>
+          <p>Bus Number: <?php echo htmlspecialchars($bus['bus_number']); ?></p>
         </div>
-    </nav>
-
-    <div class="container mx-auto px-4">
-
-        <!-- Bus Info -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h2 class="text-2xl font-bold mb-4">Select Your Seats</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <p class="text-lg font-semibold"><?php echo htmlspecialchars($bus['bus_name']); ?></p>
-                    <p class="text-gray-600">Bus Number: <?php echo htmlspecialchars($bus['bus_number']); ?></p>
-                </div>
-                <div>
-                    <p><strong>From:</strong> <?php echo htmlspecialchars($bus['from_location']); ?></p>
-                    <p><strong>To:</strong> <?php echo htmlspecialchars($bus['to_location']); ?></p>
-                    <p><strong>Date:</strong> <?php echo date('d M Y', strtotime($date)); ?></p>
-                    <p><strong>Departure:</strong> <?php echo date('h:i A', strtotime($bus['departure_time'])); ?></p>
-                </div>
-            </div>
+        <div>
+          <p><strong>From:</strong> <?php echo htmlspecialchars($bus['from_location']); ?></p>
+          <p><strong>To:</strong> <?php echo htmlspecialchars($bus['to_location']); ?></p>
+          <p><strong>Date:</strong> <?php echo date('d M Y', strtotime($date)); ?></p>
+          <p><strong>Departure:</strong> <?php echo date('h:i A', strtotime($bus['departure_time'])); ?></p>
         </div>
-
-        <!-- Seat Layout -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h3 class="text-xl font-semibold mb-4">Choose Seats</h3>
-            <div class="text-center" id="seatMap">
-                <?php
-                $total_seats = $bus['total_seats'];
-                $rows = ceil($total_seats / 4);
-                for ($i = 0; $i < $rows; $i++) {
-                    echo '<div class="flex justify-center gap-8 mb-4">';
-                    for ($j = 0; $j < 4; $j++) {
-                        $seat_num = ($i * 4) + $j + 1;
-                        if ($seat_num <= $total_seats) {
-                            $seat_label = 'S' . str_pad($seat_num, 2, '0', STR_PAD_LEFT);
-                            $booked = in_array($seat_label, $booked_seats) ? ' booked' : '';
-                            echo "<div class='seat$booked' data-seat='$seat_label'>$seat_label</div>";
-                        }
-                    }
-                    echo '</div>';
-                }
-                ?>
-            </div>
-        </div>
-
-        <!-- Booking Summary -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h3 class="text-xl font-bold mb-4">Booking Summary</h3>
-            <div class="mb-4">
-                <p>Fare per seat: Rs. <span id="farePerSeat"><?php echo number_format($bus['fare'], 2); ?></span></p>
-                <p>Selected seats: <span id="selectedSeatsText">None</span></p>
-                <p class="text-xl font-bold mt-2">Total Fare: Rs. <span id="totalAmount">0.00</span></p>
-            </div>
-            <form id="bookingForm" action="backend/process-booking.php" method="POST">
-                <input type="hidden" name="bus_id" value="<?php echo $bus_id; ?>">
-                <input type="hidden" name="date" value="<?php echo htmlspecialchars($date); ?>">
-                <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="">
-                <button type="submit" id="bookButton" disabled
-                    class="w-full bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-800 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    Confirm Booking
-                </button>
-            </form>
-        </div>
+      </div>
     </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const seatMap = document.getElementById('seatMap');
-        const selectedSeatsText = document.getElementById('selectedSeatsText');
-        const selectedSeatsInput = document.getElementById('selectedSeatsInput');
-        const totalAmount = document.getElementById('totalAmount');
-        const bookButton = document.getElementById('bookButton');
-        const farePerSeat = parseFloat(document.getElementById('farePerSeat').textContent);
-        let selectedSeats = [];
-
-        seatMap.addEventListener('click', e => {
-            if (e.target.classList.contains('seat') && !e.target.classList.contains('booked')) {
-                const seat = e.target.dataset.seat;
-                e.target.classList.toggle('selected');
-
-                if (selectedSeats.includes(seat)) {
-                    selectedSeats = selectedSeats.filter(s => s !== seat);
-                } else {
-                    selectedSeats.push(seat);
-                }
-
-                selectedSeatsText.textContent = selectedSeats.length ? selectedSeats.join(', ') : 'None';
-                totalAmount.textContent = (selectedSeats.length * farePerSeat).toFixed(2);
-                selectedSeatsInput.value = selectedSeats.join(',');
-                bookButton.disabled = selectedSeats.length === 0;
+    <!-- Seat Layout -->
+    <div class="glass-card p-8 rounded-2xl mb-10 shadow-lg text-center">
+      <h3 class="text-2xl font-semibold mb-6 gradient-text">Choose Your Seats</h3>
+      <div id="seatMap" class="inline-block">
+        <?php
+        $total_seats = $bus['total_seats'];
+        $rows = ceil($total_seats / 4);
+        for ($i = 0; $i < $rows; $i++) {
+          echo '<div class="flex justify-center gap-8 mb-4">';
+          for ($j = 0; $j < 4; $j++) {
+            $seat_num = ($i * 4) + $j + 1;
+            if ($seat_num <= $total_seats) {
+              $seat_label = 'S' . str_pad($seat_num, 2, '0', STR_PAD_LEFT);
+              $booked = in_array($seat_label, $booked_seats) ? ' booked' : '';
+              echo "<div class='seat$booked' data-seat='$seat_label'>$seat_label</div>";
             }
-        });
+          }
+          echo '</div>';
+        }
+        ?>
+      </div>
+    </div>
 
-        document.getElementById('bookingForm').addEventListener('submit', e => {
-            if (selectedSeats.length === 0) {
-                e.preventDefault();
-                alert('Please select at least one seat.');
-            }
-        });
-    });
-    </script>
+    <!-- Booking Summary -->
+    <div class="glass-card p-8 rounded-2xl shadow-lg">
+      <h3 class="text-2xl font-bold mb-4 gradient-text">Booking Summary</h3>
+      <div class="mb-6 text-gray-300">
+        <p>Fare per seat: Rs. <span id="farePerSeat"><?php echo number_format($bus['fare'], 2); ?></span></p>
+        <p>Selected seats: <span id="selectedSeatsText" class="text-white">None</span></p>
+        <p class="text-xl font-bold mt-2 text-white">Total Fare: Rs. <span id="totalAmount">0.00</span></p>
+      </div>
+      <form id="bookingForm" action="backend/process-booking.php" method="POST">
+        <input type="hidden" name="bus_id" value="<?php echo $bus_id; ?>">
+        <input type="hidden" name="date" value="<?php echo htmlspecialchars($date); ?>">
+        <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="">
+        <button type="submit" id="bookButton" disabled
+          class="w-full py-3 rounded-xl font-semibold text-white gradient-bg hover:shadow-lg hover:shadow-purple-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          Confirm Booking
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <footer class="nav-blur border-t border-white/10 py-6 text-center text-gray-400">
+    <p>&copy; <?= date("Y") ?> <span class="gradient-text font-semibold">BusGo</span>. All rights reserved.</p>
+  </footer>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const seatMap = document.getElementById('seatMap');
+      const selectedSeatsText = document.getElementById('selectedSeatsText');
+      const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+      const totalAmount = document.getElementById('totalAmount');
+      const bookButton = document.getElementById('bookButton');
+      const farePerSeat = parseFloat(document.getElementById('farePerSeat').textContent);
+      let selectedSeats = [];
+
+      seatMap.addEventListener('click', e => {
+          if (e.target.classList.contains('seat') && !e.target.classList.contains('booked')) {
+              const seat = e.target.dataset.seat;
+              e.target.classList.toggle('selected');
+
+              if (selectedSeats.includes(seat)) {
+                  selectedSeats = selectedSeats.filter(s => s !== seat);
+              } else {
+                  selectedSeats.push(seat);
+              }
+
+              selectedSeatsText.textContent = selectedSeats.length ? selectedSeats.join(', ') : 'None';
+              totalAmount.textContent = (selectedSeats.length * farePerSeat).toFixed(2);
+              selectedSeatsInput.value = selectedSeats.join(',');
+              bookButton.disabled = selectedSeats.length === 0;
+          }
+      });
+
+      document.getElementById('bookingForm').addEventListener('submit', e => {
+          if (selectedSeats.length === 0) {
+              e.preventDefault();
+              alert('Please select at least one seat.');
+          }
+      });
+  });
+  </script>
 
 </body>
 </html>
