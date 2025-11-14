@@ -138,7 +138,7 @@ $stmt->close();
       <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>
       <ul class="hidden md:flex space-x-8">
         <li><a href="index.php" class="hover:text-purple-400 transition">Home</a></li>
-        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Bookings</a></li>
+        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
         <li><a href="profile.php" class="text-purple-400 font-semibold">Profile</a></li>
       </ul>
       <a href="logout.php" class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Logout</a>
@@ -191,14 +191,25 @@ $stmt->close();
                 <td class="px-4 py-3"><?php echo htmlspecialchars($row['arrival_time']); ?></td>
                 <td class="px-4 py-3"><?php echo htmlspecialchars($row['seat_number']); ?></td>
                 <td class="px-4 py-3"><?php echo htmlspecialchars($row['fare']); ?></td>
-                <td class="px-4 py-3">
-                  <span class="px-3 py-1 rounded-lg text-white 
-                    <?php echo $row['status'] === 'confirmed' 
-                      ? 'bg-green-500/80' 
-                      : ($row['status'] === 'cancelled' ? 'bg-red-500/80' : 'bg-yellow-500/80'); ?>">
-                    <?php echo ucfirst($row['status']); ?>
-                  </span>
-                </td>
+                <td class="px-4 py-3 flex items-center gap-2">
+  <span class="px-3 py-1 rounded-lg text-white 
+    <?php echo $row['status'] === 'confirmed' 
+      ? 'bg-green-500/80' 
+      : ($row['status'] === 'cancelled' ? 'bg-red-500/80' : 'bg-yellow-500/80'); ?>">
+    <?php echo ucfirst($row['status']); ?>
+  </span>
+
+  <?php if ($row['status'] === 'confirmed'): ?>
+    <form action="cancel-booking.php" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+      <input type="hidden" name="booking_id" value="<?php echo $row['id']; ?>">
+      <button type="submit" class="px-3 py-1 bg-red-600 rounded-lg hover:bg-red-700 text-white text-sm">
+        Cancel
+      </button>
+    </form>
+  <?php endif; ?>
+</td>
+
+ 
               </tr>
             <?php endwhile; ?>
           <?php else: ?>

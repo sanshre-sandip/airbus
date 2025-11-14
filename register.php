@@ -60,7 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-  <!-- Navbar (reuse index style) -->
+  <!-- Navbar (reuse index 
+   style) -->
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
       <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>

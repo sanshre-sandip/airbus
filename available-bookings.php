@@ -81,18 +81,11 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="nav-blur fixed top-0 w-full z-50 border-b border-white/10">
-    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <a href="index.php" class="text-2xl font-bold gradient-text">🚌 BusGo</a>
-      <div class="flex items-center space-x-6">
-        <span class="text-gray-300">Welcome, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Guest'); ?></span>
-        <a href="profile.php" class="hover:text-purple-400 transition">Profile</a>
-        <a href="backend/logout.php" class="px-5 py-2 rounded-full gradient-bg font-semibold hover:shadow-lg hover:shadow-purple-500/40 transition">Logout</a>
-      </div>
-    </div>
-  </nav>
 
+<?php
+session_start();
+include 'nav.php';
+?>
   <!-- Main Section -->
   <section class="pt-28 pb-20 px-6 min-h-screen">
     <div class="max-w-7xl mx-auto">
@@ -128,10 +121,11 @@ $result = $conn->query($sql);
       <?php endif; ?>
     </div>
   </section>
+  <?php
+session_start();
+include 'footer.php';
+?>
 
-  <footer class="border-t border-white/10 text-center py-6 text-gray-500 text-sm">
-    © <?php echo date('Y'); ?> BusGo. All Rights Reserved.
-  </footer>
-
+ 
 </body>
 </html>

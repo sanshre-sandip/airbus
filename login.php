@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <button type="submit" class="w-full py-3 rounded-xl gradient-bg font-semibold text-lg">Login</button>
 
-                <p class="text-center text-sm text-gray-400 mt-3">Don't have an account? <a href="register.php" class="text-purple-300 hover:underline">Create one</a></p>
+                <p class="text-center text-sm text-gray-400 mt-3">Don't have an account ? <a href="register.php" class="text-purple-300 hover:underline">Create one</a></p>
             </form>
         </div>
     </main>

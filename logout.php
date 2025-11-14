@@ -13,7 +13,8 @@ if (ini_get('session.use_cookies')) {
 }
 // Destroy the session
 session_destroy();
-// Redirect to homepage
+// Redirect to     
+// homepage
 // Use absolute path so web server redirects correctly (adjust if your project is mounted at a different URL)
 header('Location: /advanced/index.php');
 exit();

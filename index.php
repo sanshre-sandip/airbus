@@ -217,42 +217,41 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Feature 1 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">⚡</div>
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Instant Booking</h4>
           <p class="text-gray-400 leading-relaxed">Book your tickets in seconds with our lightning-fast booking system. No hassle, no waiting.</p>
         </div>
 
         <!-- Feature 2 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">🔒</div>
+        
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Secure Payments</h4>
           <p class="text-gray-400 leading-relaxed">Your transactions are protected with bank-level encryption and secure payment gateways.</p>
         </div>
 
         <!-- Feature 3 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">📱</div>
+        
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Mobile Ready</h4>
           <p class="text-gray-400 leading-relaxed">Book from anywhere, anytime. Our platform works seamlessly on all devices.</p>
         </div>
 
         <!-- Feature 4 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">🎫</div>
+        
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Digital Tickets</h4>
           <p class="text-gray-400 leading-relaxed">Get instant digital tickets delivered to your email and phone. No need to print.</p>
         </div>
 
         <!-- Feature 5 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">🗺️</div>
+        
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Live Tracking</h4>
           <p class="text-gray-400 leading-relaxed">Track your bus in real-time and get live updates on arrival times and delays.</p>
         </div>
 
         <!-- Feature 6 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-          <div class="text-5xl mb-4">💰</div>
+        
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Best Prices</h4>
           <p class="text-gray-400 leading-relaxed">Compare prices across operators and get the best deals on your bus tickets.</p>
         </div>

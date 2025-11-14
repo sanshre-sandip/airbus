@@ -108,7 +108,7 @@ include 'nav.php';
       <?php endforeach; ?>
     <?php else: ?>
       <div class="col-span-3 text-center text-gray-400 text-lg py-12">
-        🚫 No buses found for this route.
+        No buses found for this route.
       </div>
     <?php endif; ?>
   </section>

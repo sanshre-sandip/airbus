@@ -102,7 +102,7 @@ if (!$routes) die("Error fetching routes: " . $conn->error);
                         <th class="py-3 px-4 border">Bus Name</th>
                         <th class="py-3 px-4 border">Bus Number</th>
                         <th class="py-3 px-4 border">Route</th>
-                        <th class="py-3 px-4 border">Total Seats</th>
+                        <th class="py-3 px-4 border">Total-Seats</th>
                         <th class="py-3 px-4 border text-center">Actions</th>
                     </tr>
                 </thead>

@@ -92,7 +92,7 @@ $booking_id = $_SESSION['booking_id'];
       <p class="text-lg font-semibold">👤 Passenger: 
         <span class="font-normal text-gray-300"><?php echo htmlspecialchars($user_name); ?></span>
       </p>
-      <p class="text-lg font-semibold">📅 Booking Date: 
+      <p class="text-lg font-semibold">📅 Booking-Date: 
         <span class="font-normal text-gray-300"><?php echo date('d M Y', strtotime($date)); ?></span>
       </p>
       <p class="text-lg font-semibold">🆔 Booking ID: 

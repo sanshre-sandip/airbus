@@ -87,10 +87,10 @@
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
       <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>
       <ul class="hidden md:flex space-x-8">
-        <li><a href="index.html#home" class="hover:text-purple-400 transition">Home</a></li>
-        <li><a href="#search" class="hover:text-purple-400 transition">Search</a></li>
-        <li><a href="#features" class="hover:text-purple-400 transition">Features</a></li>
-        <li><a href="#about" class="hover:text-purple-400 transition">About</a></li>
+        <li><a href="index.php#home" class="hover:text-purple-400 transition">Home</a></li>
+        <li><a href="index.php#search" class="hover:text-purple-400 transition">Search</a></li>
+        <li><a href="index.php#features" class="hover:text-purple-400 transition">Features</a></li>
+        <li><a href="index.php#about" class="hover:text-purple-400 transition">About</a></li>
         <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
         <li><a href="profile.php" class="hover:text-purple-400 transition">Profile</a></li>
       </ul>

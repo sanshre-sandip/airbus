@@ -33,7 +33,7 @@
         </ul>
       </div>
 
-      <!-- Contact Info -->
+      <!-- Contact-Info -->
       <div>
         <h3 class="text-lg font-semibold text-purple-400 mb-3">Contact Us</h3>
         <p class="text-sm mb-2 text-gray-400">📍 Kathmandu, Nepal</p>

@@ -118,6 +118,14 @@ while ($row = $booked_result->fetch_assoc()) {
       background: rgba(15, 15, 30, 0.9);
       backdrop-filter: blur(10px);
     }
+    .nav-blur {
+      background: rgba(15, 15, 30, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    table th, table td {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
   </style>
 </head>
 
@@ -127,7 +135,14 @@ while ($row = $booked_result->fetch_assoc()) {
   <nav class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
       <a href="index.php" class="text-2xl font-bold gradient-text">🚌 BusGo</a>
-      <div class="flex items-center space-x-4 text-gray-200">
+      <div class="flex items-center space-x-4 text-gray-200"> 
+        <ul class="hidden md:flex space-x-8">
+        <li><a href="index.php" class="hover:text-purple-400 transition">Home</a></li>
+        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
+        
+      </ul>
+               
+      
         <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
         <a href="backend/logout.php" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</a>
       </div>
@@ -197,9 +212,7 @@ while ($row = $booked_result->fetch_assoc()) {
 
   </div>
 
-  <footer class="nav-blur border-t border-white/10 py-6 text-center text-gray-400">
-    <p>&copy; <?= date("Y") ?> <span class="gradient-text font-semibold">BusGo</span>. All rights reserved.</p>
-  </footer>
+  
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {

@@ -57,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <nav class="flex-1 p-4 space-y-3">
             <a href="dashboard.php" class="block px-4 py-2 rounded hover:bg-blue-800">Dashboard</a>
-            <a href="routes.php" class="block px-4 py-2 rounded bg-blue-800">Manage Routes</a>
-            <a href="buses.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage Buses</a>
-            <a href="bookings.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage Bookings</a>
+            <a href="routes.php" class="block px-4 py-2 rounded bg-blue-800">Manage-Routes</a>
+            <a href="buses.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage-Buses</a>
+            <a href="bookings.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage-Bookings</a>
         </nav>
         <div class="p-4 border-t border-blue-500">
             <a href="../backend/logout.php" class="block text-center bg-red-500 py-2 rounded hover:bg-red-600">Logout</a>
