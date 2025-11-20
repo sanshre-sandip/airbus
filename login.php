@@ -42,24 +42,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BusGo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        * { font-family: 'Inter', sans-serif; }
-        body { background: #0f0f1e; color: #fff; }
-        .gradient-text { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.06); }
-        .gradient-bg { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
-        input, select, textarea { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.06); }
-        input::placeholder { color: rgba(255,255,255,0.5); }
-        input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 4px rgba(102,126,234,0.08); border-color: #667eea; }
-    </style>
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
+
 <body>
+    <canvas id="globalParticleCanvas"></canvas>
 
     <!-- Navbar (reuse index style) -->
     <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
@@ -72,7 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </ul>
             <div class="flex space-x-4">
                 <a href="login.php" class="px-4 py-2 hover:text-purple-400 transition">Login</a>
-                <a href="register.php" class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Register</a>
+                <a href="register.php"
+                    class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Register</a>
             </div>
         </div>
     </nav>
@@ -84,28 +78,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p class="text-center text-gray-300 mb-6">Log in to manage your bookings and access faster checkout.</p>
 
             <?php if (!empty($error)): ?>
-                <div class="mb-4 text-sm text-red-400 bg-red-900/10 p-3 rounded"><?php echo htmlspecialchars($error); ?></div>
+                <div class="mb-4 text-sm text-red-400 bg-red-900/10 p-3 rounded"><?php echo htmlspecialchars($error); ?>
+                </div>
             <?php endif; ?>
 
             <form action="" method="POST" class="space-y-4">
                 <div>
                     <label class="text-sm text-gray-300 mb-2 block">Email</label>
-                    <input type="email" name="email" required placeholder="you@example.com" class="w-full p-3 rounded-xl">
+                    <input type="email" name="email" required placeholder="you@example.com"
+                        class="w-full p-3 rounded-xl">
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-300 mb-2 block">Password</label>
-                    <input type="password" name="password" required placeholder="Your password" class="w-full p-3 rounded-xl">
+                    <input type="password" name="password" required placeholder="Your password"
+                        class="w-full p-3 rounded-xl">
                 </div>
 
                 <button type="submit" class="w-full py-3 rounded-xl gradient-bg font-semibold text-lg">Login</button>
 
-                <p class="text-center text-sm text-gray-400 mt-3">Don't have an account ? <a href="register.php" class="text-purple-300 hover:underline">Create one</a></p>
+                <p class="text-center text-sm text-gray-400 mt-3">Don't have an account ? <a href="register.php"
+                        class="text-purple-300 hover:underline">Create one</a></p>
             </form>
         </div>
     </main>
 
     <?php include 'footer.php'; ?>
-
+    <script src="assets/js/particles.js"></script>
 </body>
+
 </html>

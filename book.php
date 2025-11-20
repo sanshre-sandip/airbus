@@ -3,16 +3,16 @@ session_start();
 require_once 'backend/config.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+  header("Location: login.php");
+  exit();
 }
 
-$bus_id = isset($_GET['bus_id']) ? (int)$_GET['bus_id'] : 0;
+$bus_id = isset($_GET['bus_id']) ? (int) $_GET['bus_id'] : 0;
 $date = isset($_GET['date']) ? $_GET['date'] : '';
 
 if (!$bus_id || !$date) {
-    header("Location: index.php");
-    exit();
+  header("Location: index.php");
+  exit();
 }
 
 // Get bus details
@@ -27,8 +27,8 @@ $result = $stmt->get_result();
 $bus = $result->fetch_assoc();
 
 if (!$bus) {
-    header("Location: index.php");
-    exit();
+  header("Location: index.php");
+  exit();
 }
 
 // Get booked seats
@@ -40,109 +40,36 @@ $booked_stmt->execute();
 $booked_result = $booked_stmt->get_result();
 $booked_seats = [];
 while ($row = $booked_result->fetch_assoc()) {
-    $booked_seats[] = $row['seat_number'];
+  $booked_seats[] = $row['seat_number'];
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Select Seats - BusGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-    * {
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background: #0f0f1e;
-      color: #fff;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .seat {
-      width: 45px;
-      height: 45px;
-      margin: 5px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.25s ease;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      color: #ddd;
-    }
-
-    .seat:hover:not(.booked) {
-      background: rgba(118, 75, 162, 0.3);
-      transform: scale(1.1);
-    }
-
-    .seat.selected {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      border-color: #764ba2;
-      box-shadow: 0 0 10px #764ba2;
-    }
-
-    .seat.booked {
-      background: rgba(255, 255, 255, 0.08);
-      color: #777;
-      border-color: rgba(255, 255, 255, 0.1);
-      cursor: not-allowed;
-    }
-
-    .nav-blur {
-      background: rgba(15, 15, 30, 0.9);
-      backdrop-filter: blur(10px);
-    }
-    .nav-blur {
-      background: rgba(15, 15, 30, 0.9);
-      backdrop-filter: blur(10px);
-    }
-
-    table th, table td {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
 <body>
+  <canvas id="globalParticleCanvas"></canvas>
 
   <!-- Navbar -->
   <nav class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
       <a href="index.php" class="text-2xl font-bold gradient-text">🚌 BusGo</a>
-      <div class="flex items-center space-x-4 text-gray-200"> 
+      <div class="flex items-center space-x-4 text-gray-200">
         <ul class="hidden md:flex space-x-8">
-        <li><a href="index.php" class="hover:text-purple-400 transition">Home</a></li>
-        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
-        
-      </ul>
-               
-      
+          <li><a href="index.php" class="hover:text-purple-400 transition">Home</a></li>
+          <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
+
+        </ul>
+
+
         <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
         <a href="backend/logout.php" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</a>
       </div>
@@ -197,7 +124,6 @@ while ($row = $booked_result->fetch_assoc()) {
       <div class="mb-6 text-gray-300">
         <p>Fare per seat: Rs. <span id="farePerSeat"><?php echo number_format($bus['fare'], 2); ?></span></p>
         <p>Selected seats: <span id="selectedSeatsText" class="text-white">None</span></p>
-        <p class="text-xl font-bold mt-2 text-white">Total Fare: Rs. <span id="totalAmount">0.00</span></p>
       </div>
       <form id="bookingForm" action="backend/process-booking.php" method="POST">
         <input type="hidden" name="bus_id" value="<?php echo $bus_id; ?>">
@@ -212,10 +138,10 @@ while ($row = $booked_result->fetch_assoc()) {
 
   </div>
 
-  
+
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const seatMap = document.getElementById('seatMap');
       const selectedSeatsText = document.getElementById('selectedSeatsText');
       const selectedSeatsInput = document.getElementById('selectedSeatsInput');
@@ -225,31 +151,33 @@ while ($row = $booked_result->fetch_assoc()) {
       let selectedSeats = [];
 
       seatMap.addEventListener('click', e => {
-          if (e.target.classList.contains('seat') && !e.target.classList.contains('booked')) {
-              const seat = e.target.dataset.seat;
-              e.target.classList.toggle('selected');
+        if (e.target.classList.contains('seat') && !e.target.classList.contains('booked')) {
+          const seat = e.target.dataset.seat;
+          e.target.classList.toggle('selected');
 
-              if (selectedSeats.includes(seat)) {
-                  selectedSeats = selectedSeats.filter(s => s !== seat);
-              } else {
-                  selectedSeats.push(seat);
-              }
-
-              selectedSeatsText.textContent = selectedSeats.length ? selectedSeats.join(', ') : 'None';
-              totalAmount.textContent = (selectedSeats.length * farePerSeat).toFixed(2);
-              selectedSeatsInput.value = selectedSeats.join(',');
-              bookButton.disabled = selectedSeats.length === 0;
+          if (selectedSeats.includes(seat)) {
+            selectedSeats = selectedSeats.filter(s => s !== seat);
+          } else {
+            selectedSeats.push(seat);
           }
+
+          selectedSeatsText.textContent = selectedSeats.length ? selectedSeats.join(', ') : 'None';
+          totalAmount.textContent = (selectedSeats.length * farePerSeat).toFixed(2);
+          selectedSeatsInput.value = selectedSeats.join(',');
+          bookButton.disabled = selectedSeats.length === 0;
+        }
       });
 
       document.getElementById('bookingForm').addEventListener('submit', e => {
-          if (selectedSeats.length === 0) {
-              e.preventDefault();
-              alert('Please select at least one seat.');
-          }
+        if (selectedSeats.length === 0) {
+          e.preventDefault();
+          alert('Please select at least one seat.');
+        }
       });
-  });
+    });
   </script>
 
+  <script src="assets/js/particles.js"></script>
 </body>
+
 </html>
