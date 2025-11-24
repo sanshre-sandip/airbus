@@ -20,12 +20,14 @@ $total_revenue = $conn->query("SELECT SUM(r.fare) AS total FROM bookings b
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Bus Booking System</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 font-sans">
 
     <!-- Sidebar -->
@@ -38,13 +40,12 @@ $total_revenue = $conn->query("SELECT SUM(r.fare) AS total FROM bookings b
                 <a href="dashboard.php" class="block px-4 py-2 rounded bg-blue-800">Dashboard</a>
                 <a href="routes.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage Routes</a>
                 <a href="buses.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage Buses</a>
-                <a href="bookings.php" class="block px-4 py-2 rounded hover:bg-blue-800">bookings</a>
-                <a href="help-center.php" class="block px-4 py-2 rounded hover:bg-blue-800">help center</a>
-                            </nav>
+                <a href="bookings.php" class="block px-4 py-2 rounded hover:bg-blue-800">Bookings</a>
+                <a href="users.php" class="block px-4 py-2 rounded hover:bg-blue-800">Manage Users</a>
+            </nav>
             <div class="p-4 border-t border-blue-500">
-                <a href="../backend/logout.php" class="btn btn-danger">Logout</a>
-
-                <a href="logout.php" class="block text-center bg-red-500 py-2 rounded hover:bg-red-600">Logout</a>
+                <a href="../logout.php"
+                    class="block text-center bg-red-500 py-2 rounded hover:bg-red-600 transition">Logout</a>
             </div>
         </aside>
 
@@ -76,7 +77,9 @@ $total_revenue = $conn->query("SELECT SUM(r.fare) AS total FROM bookings b
 
                 <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
                     <h3 class="text-gray-500 text-sm font-semibold">Total Revenue</h3>
-                    <p class="text-3xl font-bold text-green-600 mt-2">Rs. <?php echo number_format($total_revenue, 2); ?></p>
+                    <p class="text-3xl font-bold text-green-600 mt-2">Rs.
+                        <?php echo number_format($total_revenue, 2); ?>
+                    </p>
                 </div>
             </div>
 
@@ -109,8 +112,8 @@ $total_revenue = $conn->query("SELECT SUM(r.fare) AS total FROM bookings b
                                         <td class='border px-4 py-2'>{$row['seat_number']}</td>
                                         <td class='border px-4 py-2'>" . date('d M Y', strtotime($row['booking_date'])) . "</td>
                                         <td class='border px-4 py-2'>
-                                            <span class='px-2 py-1 rounded text-sm " . 
-                                            ($row['status'] == 'confirmed' ? 'bg-green-100 text-green-700' : 
+                                            <span class='px-2 py-1 rounded text-sm " .
+                                        ($row['status'] == 'confirmed' ? 'bg-green-100 text-green-700' :
                                             ($row['status'] == 'cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700')) . "'>
                                             {$row['status']}
                                             </span>
@@ -128,4 +131,5 @@ $total_revenue = $conn->query("SELECT SUM(r.fare) AS total FROM bookings b
         </main>
     </div>
 </body>
+
 </html>

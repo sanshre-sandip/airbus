@@ -401,3 +401,35 @@ a {
         transform: rotate(10deg) scale(1.1);
     }
 }
+
+/* Bus Driving Animation */
+@keyframes driveBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes wheelSpin {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+.bus-drive {
+    animation: driveBounce 1s ease-in-out infinite;
+}
+
+.wheel-spin {
+    transform-origin: center;
+    animation: wheelSpin 2s linear infinite;
+}

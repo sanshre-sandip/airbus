@@ -100,7 +100,7 @@ $stmt->close();
   <!-- Navbar -->
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>
+      <h1 class="text-2xl font-bold gradient-text">🚌 </h1>
       <ul class="hidden md:flex space-x-8">
         <li><a href="index.php" class="hover:text-purple-400 transition">Home</a></li>
         <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>

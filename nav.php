@@ -14,7 +14,7 @@
   <!-- Enhanced Navbar -->
   <nav class="fixed top-0 w-full z-50 nav-blur nav-animated-border">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <a href="index.php" class="text-2xl font-bold gradient-text tracking-tighter">🚌 BusGo</a>
+      <a href="index.php" class="text-2xl font-bold gradient-text tracking-tighter">🚌</a>
 
       <!-- Desktop Menu -->
       <ul class="hidden md:flex space-x-8 items-center">
