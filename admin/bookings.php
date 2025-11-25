@@ -46,7 +46,8 @@ $result = $conn->query($sql);
             <h1 class="text-xl font-bold">🚌 Admin Dashboard</h1>
             <div>
                 <a href="dashboard.php" class="mr-4 hover:text-gray-200">Dashboard</a>
-                <a href="../backend/logout.php" class="hover:text-gray-200">Logout</a>
+                <a href="users.php" class="mr-4 hover:text-gray-200">Manage Users</a>
+                <a href="../logout.php" class="hover:text-gray-200">Logout</a>
             </div>
         </div>
     </nav>

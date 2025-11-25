@@ -65,7 +65,7 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
   <!-- Enhanced Navbar -->
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <h1 class="text-2xl font-bold gradient-text">🚌 BusGo</h1>
+      <h1 class="text-2xl font-bold gradient-text">🚌</h1>
       <ul class="hidden md:flex space-x-8">
         <li><a href="#home" class="hover:text-purple-400 transition">Home</a></li>
         <li><a href="#search" class="hover:text-purple-400 transition">Search</a></li>
@@ -117,8 +117,9 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
 
       <!-- Hero Visual -->
       <div class="flex justify-center">
-        <div class="float-animation">
-          <svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+        <div class="bus-drive">
+          <svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"
+            style="transform: scaleX(-1); transform-origin: center;">
             <defs>
               <linearGradient id="busGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#4f46e5" />
@@ -138,35 +139,56 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
             <ellipse cx="250" cy="260" rx="200" ry="20" fill="rgba(0,0,0,0.4)" filter="url(#neonGlow)" />
 
             <!-- Bus Body -->
-            <path d="M50,100 L400,100 C440,100 460,120 460,160 L460,220 C460,240 440,250 420,250 L80,250 C60,250 40,240 40,220 L40,140 C40,110 50,100 50,100 Z" fill="url(#busGradient)" />
+            <path
+              d="M50,100 L400,100 C440,100 460,120 460,160 L460,220 C460,240 440,250 420,250 L80,250 C60,250 40,240 40,220 L40,140 C40,110 50,100 50,100 Z"
+              fill="url(#busGradient)" />
 
             <!-- Windows Container -->
             <path d="M60,110 L380,110 L380,170 L60,170 Z" fill="#1e1b4b" />
-            
+
             <!-- Individual Windows -->
             <rect x="70" y="115" width="70" height="50" rx="5" fill="url(#glassGradient)" />
             <rect x="150" y="115" width="70" height="50" rx="5" fill="url(#glassGradient)" />
             <rect x="230" y="115" width="70" height="50" rx="5" fill="url(#glassGradient)" />
-            
+
             <!-- Driver Window -->
             <path d="M390,110 L440,120 L440,170 L390,170 Z" fill="url(#glassGradient)" opacity="0.8" />
 
-            <!-- Wheels -->
-            <g transform="translate(110, 250)">
-              <circle r="35" fill="#171717" stroke="#333" stroke-width="4" />
-              <circle r="20" fill="#4b5563" />
-              <circle r="10" fill="#d1d5db" />
+            <!-- Side Mirror -->
+            <g transform="translate(435, 130)">
+              <path d="M0,10 L15,5" stroke="#1e1b4b" stroke-width="4" stroke-linecap="round" />
+              <rect x="12" y="-10" width="12" height="35" rx="3" fill="#1e1b4b" />
+              <rect x="14" y="-8" width="8" height="31" rx="2" fill="url(#glassGradient)" opacity="0.8" />
             </g>
-            
+
+            <!-- Wheels -->
+            <!-- Front Wheel -->
             <g transform="translate(360, 250)">
-              <circle r="35" fill="#171717" stroke="#333" stroke-width="4" />
-              <circle r="20" fill="#4b5563" />
-              <circle r="10" fill="#d1d5db" />
+              <g class="wheel-spin" style="transform-box: fill-box; transform-origin: center;">
+                <circle r="35" fill="#171717" stroke="#333" stroke-width="4" />
+                <circle r="20" fill="#4b5563" />
+                <circle r="10" fill="#d1d5db" />
+                <!-- Spokes for rotation visibility -->
+                <rect x="-30" y="-2" width="60" height="4" fill="#333" />
+                <rect x="-2" y="-30" width="4" height="60" fill="#333" />
+              </g>
+            </g>
+
+            <!-- Rear Wheel -->
+            <g transform="translate(110, 250)">
+              <g class="wheel-spin" style="transform-box: fill-box; transform-origin: center;">
+                <circle r="35" fill="#171717" stroke="#333" stroke-width="4" />
+                <circle r="20" fill="#4b5563" />
+                <circle r="10" fill="#d1d5db" />
+                <!-- Spokes for rotation visibility -->
+                <rect x="-30" y="-2" width="60" height="4" fill="#333" />
+                <rect x="-2" y="-30" width="4" height="60" fill="#333" />
+              </g>
             </g>
 
             <!-- Headlight -->
             <path d="M455,200 L465,200 L465,220 L455,220 Z" fill="#fef08a" filter="url(#neonGlow)" />
-            
+
             <!-- Details -->
             <rect x="40" y="190" width="420" height="5" fill="rgba(255,255,255,0.1)" />
             <rect x="200" y="250" width="100" height="10" rx="5" fill="#333" />
