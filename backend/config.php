@@ -1,15 +1,19 @@
 <?php
 $servername = "localhost";
-$username = "sandip";
-$password = "sandip";
+$username = "root";
+$password = "";
 $database = "bus_booking";
 
+// Create connection
 $conn = new mysqli($servername, $username, $password, $database);
 
+// Check connection
 if ($conn->connect_error) {
-    die("---Connection-failed: " . $conn->connect_error);
+    die("❌ Connection failed: " . $conn->connect_error);
 }
 
-// Optional: uncomment to check
-// echo "✅ Database connected successfully";
+// Set UTF-8 encoding
+$conn->set_charset("utf8mb4");
+
+// echo "✅ Connected successfully";
 ?>

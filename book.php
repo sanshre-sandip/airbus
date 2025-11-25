@@ -119,12 +119,17 @@ while ($row = $booked_result->fetch_assoc()) {
     </div>
 
     <!-- Booking Summary -->
-    <div class="glass-card p-8 rounded-2xl shadow-lg">
-      <h3 class="text-2xl font-bold mb-4 gradient-text">Booking Summary</h3>
-      <div class="mb-6 text-gray-300">
-        <p>Fare per seat: Rs. <span id="farePerSeat"><?php echo number_format($bus['fare'], 2); ?></span></p>
-        <p>Selected seats: <span id="selectedSeatsText" class="text-white">None</span></p>
-      </div>
+    <!-- Booking Summary: keep formatted display but add raw data attribute -->
+<div class="mb-6 text-gray-300">
+  <p>Fare per seat: Rs.
+    <span id="farePerSeat" data-fare="<?php echo htmlspecialchars($bus['fare']); ?>">
+      <?php echo number_format($bus['fare'], 2); ?>
+    </span>
+  </p>
+  <p>Selected seats: <span id="selectedSeatsText" class="text-white">None</span></p>
+  <p>Total Amount: Rs. <span id="totalAmount">0.00</span></p>
+</div>
+
       <form id="bookingForm" action="backend/process-booking.php" method="POST">
         <input type="hidden" name="bus_id" value="<?php echo $bus_id; ?>">
         <input type="hidden" name="date" value="<?php echo htmlspecialchars($date); ?>">
@@ -139,7 +144,7 @@ while ($row = $booked_result->fetch_assoc()) {
   </div>
 
 
-
+<!--
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const seatMap = document.getElementById('seatMap');
@@ -175,7 +180,71 @@ while ($row = $booked_result->fetch_assoc()) {
         }
       });
     });
-  </script>
+  </script>-->
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const seatMap = document.getElementById('seatMap');
+  const selectedSeatsText = document.getElementById('selectedSeatsText');
+  const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+  const totalAmountEl = document.getElementById('totalAmount');
+  const bookButton = document.getElementById('bookButton');
+
+  // Read fare from data attribute if present, otherwise parse displayed text (strip commas)
+  const fareSpan = document.getElementById('farePerSeat');
+  let farePerSeat = 0;
+  if (fareSpan) {
+    if (fareSpan.dataset && fareSpan.dataset.fare) {
+      farePerSeat = parseFloat(fareSpan.dataset.fare);
+    } else {
+      farePerSeat = parseFloat(fareSpan.textContent.replace(/,/g, '')) || 0;
+    }
+  }
+
+  let selectedSeats = [];
+
+  if (seatMap) {
+    seatMap.addEventListener('click', e => {
+      const target = e.target;
+      if (!target) return;
+      if (target.classList.contains('seat') && !target.classList.contains('booked')) {
+        const seat = target.dataset.seat;
+        target.classList.toggle('selected');
+
+        if (selectedSeats.includes(seat)) {
+          selectedSeats = selectedSeats.filter(s => s !== seat);
+        } else {
+          selectedSeats.push(seat);
+        }
+
+        // Optional: sort seat labels naturally (S01, S02, S10, ...)
+        selectedSeats.sort((a, b) => {
+          const na = parseInt(a.replace(/\D/g, ''), 10);
+          const nb = parseInt(b.replace(/\D/g, ''), 10);
+          return na - nb;
+        });
+
+        selectedSeatsText.textContent = selectedSeats.length ? selectedSeats.join(', ') : 'None';
+        if (totalAmountEl) {
+          totalAmountEl.textContent = (selectedSeats.length * farePerSeat).toFixed(2);
+        }
+        selectedSeatsInput.value = selectedSeats.join(',');
+        bookButton.disabled = selectedSeats.length === 0;
+      }
+    });
+  }
+
+  const bookingForm = document.getElementById('bookingForm');
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', e => {
+      if (selectedSeats.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one seat.');
+      }
+    });
+  }
+});
+</script>
+
 
   <script src="assets/js/particles.js"></script>
 </body>
