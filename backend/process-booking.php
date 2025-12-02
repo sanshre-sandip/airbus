@@ -56,7 +56,7 @@ $insert->close();
 $stmt->close();
 $conn->close();
 
-
+// Redirect to success page
 header("Location: ../booking-success.php?bus_id=$bus_id&date=$date&seats=$selected_seats");
 exit();
 ?>

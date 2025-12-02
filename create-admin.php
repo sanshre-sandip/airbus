@@ -65,7 +65,7 @@ if ($res && $res->num_rows > 0) {
     }
     $update->close();
 } else {
-    // Insert new admin 
+    // Insert new admin user
     $insert = $conn->prepare("INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, 1)");
     if (!$insert) {
         echo "DB prepare error (insert): " . $conn->error . "\n";

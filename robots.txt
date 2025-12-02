@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /admin/
-Allow: /
-Sitemap: https://busgo.infinityfreeapp.com/sitemap.xml

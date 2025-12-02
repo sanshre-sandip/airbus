@@ -1,96 +1,119 @@
 <?php
-// Start session (important for checking login)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check login status
+// Start session early so we can render nav based on login state
+session_start();
 $is_logged_in = isset($_SESSION['user_id']);
-$user_name = $is_logged_in ? $_SESSION['user_name'] : "";
+$user_name = $is_logged_in ? ($_SESSION['user_name'] ?? '') : '';
+$is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BusGo - Smart Bus Ticketing System</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/main.css">
-</head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+    
+    * {
+      font-family: 'Inter', sans-serif;
+    }
 
+    body {
+      background: #0f0f1e;
+      color: #fff;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 1s ease;
+    }
+
+    .nav-blur {
+      background: rgba(15, 15, 30, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    input[type="text"], input[type="date"] {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    input[type="text"]:focus, input[type="date"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+  </style>
+</head>
 <body>
 
   <!-- Enhanced Navbar -->
-  <nav class="fixed top-0 w-full z-50 nav-blur nav-animated-border">
+  <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <a href="index.php" class="text-2xl font-bold gradient-text tracking-tighter">🚌</a>
+      <div class="p-1 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500">
+  <img src="logo.png" alt="logo" class="w-12 h-auto rounded-full">
+</div>
 
-      <!-- Desktop Menu -->
-      <ul class="hidden md:flex space-x-8 items-center">
-        <li><a href="index.php#home" class="hover:text-purple-400 transition font-medium">Home</a></li>
-        <li><a href="index.php#search" class="hover:text-purple-400 transition font-medium">Search</a></li>
-        <li><a href="index.php#features" class="hover:text-purple-400 transition font-medium">Features</a></li>
-        <li><a href="index.php#about" class="hover:text-purple-400 transition font-medium">About</a></li>
-        <li><a href="available-bookings.php" class="hover:text-purple-400 transition font-medium">Bookings</a></li>
-        <li><a href="profile.php" class="hover:text-purple-400 transition font-medium">Profile</a></li>
+      <ul class="hidden md:flex space-x-8">
+        <li><a href="index.php#home" class="hover:text-purple-400 transition">Home</a></li>
+        <li><a href="index.php#search" class="hover:text-purple-400 transition">Search</a></li>
+        <li><a href="index.php#features" class="hover:text-purple-400 transition">Features</a></li>
+        <li><a href="index.php#about" class="hover:text-purple-400 transition">About</a></li>
+        <li><a href="available-bookings.php" class="hover:text-purple-400 transition">Booking Available</a></li>
+        <li><a href="profile.php" class="hover:text-purple-400 transition">Profile</a></li>
       </ul>
-
-      <!-- Desktop Auth Buttons -->
-      <div class="hidden md:flex space-x-4 items-center">
+      <div class="flex space-x-4">
         <?php if ($is_logged_in): ?>
-          <span class="text-sm text-gray-300">Hi, <?php echo htmlspecialchars($user_name); ?></span>
-          <a href="logout.php"
-            class="px-4 py-2 border border-white/20 rounded-full hover:bg-white/10 transition text-sm">Logout</a>
+          <span class="px-4 py-2">Welcome, <?php echo htmlspecialchars($user_name); ?></span>
+          <a href="logout.php" class="px-4 py-2 hover:text-purple-400 transition">Logout</a>
         <?php else: ?>
-          <a href="login.php" class="px-4 py-2 hover:text-purple-400 transition font-medium">Login</a>
-          <a href="register.php"
-            class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition text-sm">Register</a>
+          <a href="login.php" class="px-4 py-2 hover:text-purple-400 transition">Login</a>
+          <a href="register.php" class="px-6 py-2 gradient-bg rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Register</a>
         <?php endif; ?>
       </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile Menu Drawer -->
-    <div id="mobile-menu"
-      class="hidden md:hidden bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10 absolute w-full left-0 top-full">
-      <ul class="flex flex-col p-6 space-y-4 text-center">
-        <li><a href="index.php#home" class="block text-lg hover:text-purple-400 transition">Home</a></li>
-        <li><a href="index.php#search" class="block text-lg hover:text-purple-400 transition">Search</a></li>
-        <li><a href="index.php#features" class="block text-lg hover:text-purple-400 transition">Features</a></li>
-        <li><a href="available-bookings.php" class="block text-lg hover:text-purple-400 transition">Bookings</a></li>
-        <li><a href="profile.php" class="block text-lg hover:text-purple-400 transition">Profile</a></li>
-        <li class="pt-4 border-t border-white/10">
-          <?php if ($is_logged_in): ?>
-            <span class="block text-gray-400 mb-2">Signed in as <?php echo htmlspecialchars($user_name); ?></span>
-            <a href="logout.php"
-              class="block px-4 py-2 border border-white/20 rounded-full mx-auto w-1/2 hover:bg-white/10 transition">Logout</a>
-          <?php else: ?>
-            <div class="flex flex-col gap-3">
-              <a href="login.php" class="block text-lg hover:text-purple-400 transition">Login</a>
-              <a href="register.php" class="block px-6 py-3 gradient-bg rounded-xl font-semibold">Register Now</a>
-            </div>
-          <?php endif; ?>
-        </li>
-      </ul>
     </div>
   </nav>
-
-  <script>
-    // Mobile Menu Toggle
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-
-    btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
-  </script>
-</body>
-
-</html>
+        </body>

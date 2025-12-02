@@ -23,6 +23,7 @@ if (!$bus) {
     exit();
 }
 
+// Get booked seats count
 $booked_sql = "SELECT COUNT(*) as booked FROM bookings 
                WHERE bus_id = ? AND booking_date = ? AND status != 'cancelled'";
 $booked_stmt = $conn->prepare($booked_sql);

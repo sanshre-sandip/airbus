@@ -90,27 +90,7 @@ CREATE TABLE `routes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `routes
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- Dumping data for table `routes`
 --
 
 INSERT INTO `routes` (`id`, `from_location`, `to_location`, `departure_time`, `arrival_time`, `fare`, `created_at`) VALUES

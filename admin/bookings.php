@@ -46,8 +46,7 @@ $result = $conn->query($sql);
             <h1 class="text-xl font-bold">🚌 Admin Dashboard</h1>
             <div>
                 <a href="dashboard.php" class="mr-4 hover:text-gray-200">Dashboard</a>
-                <a href="users.php" class="mr-4 hover:text-gray-200">Manage Users</a>
-                <a href="../logout.php" class="hover:text-gray-200">Logout</a>
+                <a href="../backend/logout.php" class="hover:text-gray-200">Logout</a>
             </div>
         </div>
     </nav>
@@ -78,7 +77,7 @@ $result = $conn->query($sql);
                                 <td class="border px-4 py-2">
                                     <?php echo htmlspecialchars($row['bus_name']); ?><br>
                                     <span class="text-xs text-gray-500"><?php echo htmlspecialchars($row['bus_number']); ?></span>
-                        </td>
+                                </td>
                                 <td class="border px-4 py-2">
                                     <?php echo htmlspecialchars($row['from_location']); ?> →
                                     <?php echo htmlspecialchars($row['to_location']); ?>
