@@ -1,187 +1,188 @@
-# 🚌 Bus Booking System
+# BusGo – Bus Booking System
 
-A dynamic Bus Booking System built with PHP, MySQL, AJAX, JavaScript, HTML, and CSS. This web platform lets users search routes, select seats on an interactive seat map, and complete bookings with real-time seat availability. Administrators can manage buses, routes, and bookings via a simple admin panel.
-
----
-
-## 🚀 Features
-
-### User
-- User registration & login with password hashing
-- Search buses by route and date
-- Visual seat map and real-time seat availability (AJAX)
-- Select multiple seats and view a live booking summary
-- Booking confirmation page with saved booking records
-
-### Admin
-- Admin-only dashboard (add/edit/delete buses and routes)
-- View and manage all bookings (confirm/cancel/delete)
-- Simple analytics (counts for users, buses, bookings)
+A dynamic Bus Booking System built with PHP, MySQL, AJAX, JavaScript, HTML, and CSS. BusGo allows users to search for available bus routes, view real-time seat availability, select seats using an interactive seat map, and complete bookings securely. Administrators can manage buses, routes, and all bookings through a dedicated admin dashboard.
 
 ---
 
-## 💻 Technologies
-- Frontend: HTML5, Tailwind CSS, (Bootstrap-ready), JavaScript, AJAX
-- Backend: PHP (MySQLi, procedural)
-- Database: MySQL
-- Server: XAMPP / Apache (local development)
+## Features
+
+### User Features
+- User registration and login with secure password hashing
+- Search for buses by origin, destination, and travel date
+- Interactive seat map with real-time seat availability (updated via AJAX)
+- Ability to select multiple seats and view a live booking summary
+- Booking confirmation with saved records in the database
+
+### Admin Features
+- Secure admin-only dashboard
+- Full CRUD operations for buses and routes
+- View, confirm, cancel, or delete any booking
+- Overview statistics including total users, buses, and bookings
 
 ---
 
-## 📂 Project Structure
+## Technologies Used
+- **Frontend**: HTML5, CSS (Tailwind CSS supported, Bootstrap-ready), JavaScript, AJAX
+- **Backend**: PHP (procedural style with MySQLi)
+- **Database**: MySQL
+- **Local Development Server**: XAMPP / Apache
+
+---
+
+## Project Structure
 
 ```
 /var/www/html/advanced/
 ├── admin/
-│   ├── dashboard.php        # Admin overview
-│   ├── buses.php            # Manage buses (CRUD)
+│   ├── dashboard.php        # Admin overview page
+│   ├── buses.php            # Manage buses (Create, Read, Update, Delete)
 │   ├── routes.php           # Manage routes (CRUD)
-│   └── bookings.php         # View/manage bookings
+│   └── bookings.php         # View and manage all bookings
 ├── assets/
 │   ├── css/
-│   │   └── styles.css       # Custom styles
+│   │   └── styles.css       # Custom CSS styles
 │   └── js/
-│       └── scripts.js       # Client-side scripts
+│       └── scripts.js       # Client-side JavaScript and AJAX handlers
 ├── backend/
-│   ├── config.php           # DB connection
-│   ├── logout.php           # Logout handler
-│   ├── process-booking.php  # Booking processor (transactions)
-│   └── get-available-seats.php # AJAX seat availability
-├── index.php                # Homepage + search
-├── login.php                # User login
-├── register.php             # User registration
-├── search-results.php       # Results + seat availability (AJAX)
-├── book.php                 # Seat map and booking UI
-├── booking-success.php      # Booking confirmation
-├── database.sql             # Database schema + sample data
+│   ├── config.php           # Database connection settings
+│   ├── logout.php           # Session destroy and redirect
+│   ├── process-booking.php  # Handles booking submission with database transaction
+│   └── get-available-seats.php # Returns available seats via AJAX
+├── index.php                # Homepage with route search form
+├── login.php                # User login page
+├── register.php             # User registration page
+├── search-results.php       # Displays matching buses and triggers seat availability
+├── book.php                 # Seat selection interface
+├── booking-success.php      # Booking confirmation page
+├── database.sql             # Complete database schema and sample data
 └── README.md
 ```
 
 ---
 
-## 🗄️ Database Schema (summary)
+## Database Schema (Summary)
 
-Tables and key columns:
+Key tables and columns:
 
-- `users` — `id`, `name`, `email`, `password`, `is_admin`, `created_at`
-- `routes` — `id`, `from_location`, `to_location`, `departure_time`, `arrival_time`, `fare`
-- `buses` — `id`, `bus_name`, `bus_number`, `total_seats`, `route_id`
-- `bookings` — `id`, `user_id`, `bus_id`, `seat_number`, `booking_date`, `status`, `created_at`
+- **users**: `id`, `name`, `email`, `password`, `is_admin`, `created_at`
+- **routes**: `id`, `from_location`, `to_location`, `departure_time`, `arrival_time`, `fare`
+- **buses**: `id`, `bus_name`, `bus_number`, `total_seats`, `route_id`
+- **bookings**: `id`, `user_id`, `bus_id`, `seat_number`, `booking_date`, `status`, `created_at`
 
-Note: The provided `database.sql` contains the full CREATE TABLE statements and some sample data.
-
----
-
-## 🔧 Installation (Local - XAMPP)
-
-1. Place the project folder in your web server directory (e.g., XAMPP `htdocs`):
-
-```bash
-# copy project to XAMPP htdocs
-# cp -r advanced /opt/lampp/htdocs/advanced
-```
-
-2. Create the database and import schema:
-
-- Open phpMyAdmin (http://localhost/phpmyadmin) and create a database named `bus_booking`, then import `database.sql`. Or use the MySQL CLI:
-
-```bash
-mysql -u root -p
-CREATE DATABASE bus_booking;
-EXIT;
-mysql -u root -p bus_booking < /path/to/advanced/database.sql
-```
-
-3. Configure database connection:
-
-Edit `backend/config.php` and set your credentials. Example:
-
-```php
-<?php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'bus_booking');
-
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-?>
-```
-
-4. Open the app in your browser:
-
-```
-http://localhost/advanced/
-```
+The `database.sql` file includes full `CREATE TABLE` statements and sample data for testing.
 
 ---
 
-## ⚡ Admin Access (example)
+## Installation (Local Development with XAMPP)
 
-- Email: `admin@busticket.com` (or `admin@example.com` depending on your imported SQL)
-- Password: `admin123` (the SQL file includes a hashed password example)
+1. **Place the project folder** in your web server directory:
+   ```bash
+   # Example for XAMPP on Linux
+   cp -r advanced /opt/lampp/htdocs/advanced
+   ```
 
-To create or reset an admin account, run in PHP or use phpMyAdmin to insert a user with a hashed password:
+2. **Create and populate the database**:
+   - Open phpMyAdmin at `http://localhost/phpmyadmin`
+   - Create a new database named `bus_booking`
+   - Import the `database.sql` file into this database  
+   **OR** use the command line:
+     ```bash
+     mysql -u root -p
+     CREATE DATABASE bus_booking;
+     EXIT;
+     mysql -u root -p bus_booking < /path/to/advanced/database.sql
+     ```
 
-```php
-<?php
-echo password_hash('admin123', PASSWORD_DEFAULT);
-?>
-```
+3. **Configure database connection** in `backend/config.php`:
+   ```php
+   <?php
+   define('DB_HOST', 'localhost');
+   define('DB_USER', 'root');
+   define('DB_PASS', '');        // Default XAMPP password is empty
+   define('DB_NAME', 'bus_booking');
 
-Then insert that hash into `users.password` with `is_admin = 1`.
+   $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+   if ($conn->connect_error) {
+       die("Connection failed: " . $conn->connect_error);
+   }
+   ?>
+   ```
+
+4. **Launch the application** in your browser:
+   ```
+   http://localhost/advanced/
+   ```
 
 ---
 
-## 🧭 How it works (high level)
+## Admin Access
 
-- Users search for buses by selecting `From`, `To`, and `Date` on `index.php`.
-- `search-results.php` queries matching buses and uses AJAX (`backend/get-available-seats.php`) to show live availability.
-- On `book.php`, users see a seat map; booked seats are disabled. Selecting seats updates the booking summary client-side.
-- `backend/process-booking.php` runs a DB transaction: re-checks seat availability, inserts bookings, and commits or rolls back on error.
-- Admin pages live under `/admin` and are protected by the `is_admin` session flag.
+After importing the provided `database.sql`, the following admin account is available:
+
+- **Email**: `admin@busticket.com`
+- **Password**: `admin123`
+
+> Note: The password is stored as a `password_hash()` value in the database for security.
+
+To create a new admin account manually:
+1. Generate a password hash using PHP:
+   ```php
+   <?php echo password_hash('your_password', PASSWORD_DEFAULT); ?>
+   ```
+2. Insert a new user into the `users` table with `is_admin = 1` and the generated hash.
 
 ---
 
-## ✅ Security & Data Integrity
+## How It Works
 
-- Passwords hashed with `password_hash()`
-- Prepared statements (MySQLi) to prevent SQL injection
-- Server-side validation and transaction handling for bookings
-- Session checks for protected areas (admin and user-only pages)
+1. Users enter origin, destination, and travel date on the homepage (`index.php`).
+2. Matching buses are displayed on `search-results.php`.
+3. Real-time seat availability is fetched via AJAX (`backend/get-available-seats.php`) when a user clicks "Book."
+4. On `book.php`, users interact with a visual seat map. Booked seats are disabled; selected seats update a live summary.
+5. Upon submission, `backend/process-booking.php`:
+   - Starts a database transaction
+   - Re-validates seat availability
+   - Inserts booking records
+   - Commits on success or rolls back on failure
+6. Admin pages (under `/admin`) require an active session with `is_admin = 1`.
 
 ---
 
-## ✨ Contribution
+## Security and Data Integrity
 
-Contributions are welcome. Suggested workflow:
+- Passwords are hashed using PHP’s `password_hash()` and verified with `password_verify()`
+- All database queries use prepared statements to prevent SQL injection
+- Booking logic uses MySQL transactions to ensure data consistency
+- Session-based authentication protects user and admin routes
+- Input validation is performed on both client and server sides
+
+---
+
+## Future Enhancements (Suggestions)
+
+- Add user booking history page
+- Integrate email/SMS notifications for booking confirmations
+- Implement payment gateway integration (e.g., Stripe, PayPal)
+- Add responsive design improvements for mobile users
+- Migrate to an MVC architecture or a modern framework (e.g., Laravel) for scalability
+
+---
+
+## Contributing
+
+Contributions are welcome. To contribute:
 
 1. Fork the repository
-2. Create a branch for your feature/fix
-3. Open a pull request with a clear description
+2. Create a new feature or bugfix branch
+3. Commit your changes with clear messages
+4. Push to your fork and open a pull request
+
+Please include a description of the problem and your solution.
 
 ---
 
-## 📝 Notes & Next Steps
+## License
 
-- You may want to add email notifications, payment gateway integration, and user booking history pages.
-- Consider moving to an MVC structure or using a framework (Laravel) for larger projects.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
-
-If you want, I can also add screenshots, a setup script, or an .env-based config loader. Tell me which you'd like next.
-
-
-
-messages from users;
-Sajilo Booking
-yatra nepal
-
