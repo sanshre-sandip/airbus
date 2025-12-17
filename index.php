@@ -54,7 +54,7 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-    
+   
     * {
       font-family: 'Inter', sans-serif;
     }
@@ -207,41 +207,41 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
   <section id="search" class="py-20 px-6 bg-gradient-to-b from-[#0f0f1e] to-[#1a1a2e]">
     <div class="max-w-5xl mx-auto">
       <h3 class="text-4xl font-bold text-center mb-12 gradient-text">Book Your Journey</h3>
-      
+     
       <div class="glass-card p-8 rounded-2xl">
         <form action="search-results.php" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div class="flex flex-col">
             <label class="mb-2 text-sm text-gray-400">From</label>
-            <input 
-              type="text" 
-              name="from" 
-              placeholder="Enter departure city" 
-              required 
+            <input
+              type="text"
+              name="from"
+              placeholder="Enter departure city"
+              required
               class="p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
           </div>
-          
+         
           <div class="flex flex-col">
             <label class="mb-2 text-sm text-gray-400">To</label>
-            <input 
-              type="text" 
-              name="to" 
-              placeholder="Enter destination" 
-              required 
+            <input
+              type="text"
+              name="to"
+              placeholder="Enter destination"
+              required
               class="p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
           </div>
-          
+         
           <div class="flex flex-col">
             <label class="mb-2 text-sm text-gray-400">Date</label>
-            <input 
-              type="date" 
-              name="date" 
-              required 
+            <input
+              type="date"
+              name="date"
+              required
               class="p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
           </div>
-          
+         
           <div class="flex items-end">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               class="w-full p-4 gradient-bg rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-purple-500/50 transition transform hover:-translate-y-1">
               Search Buses
             </button>
@@ -256,7 +256,7 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
     <div class="max-w-7xl mx-auto">
       <h3 class="text-4xl font-bold text-center mb-4 gradient-text">Why Choose BusGo?</h3>
       <p class="text-center text-gray-400 mb-12 text-lg">Everything you need for a seamless travel experience</p>
-      
+     
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Feature 1 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
@@ -266,35 +266,35 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
 
         <!-- Feature 2 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-        
+       
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Secure Payments</h4>
           <p class="text-gray-400 leading-relaxed">Your transactions are protected with bank-level encryption and secure payment gateways.</p>
         </div>
 
         <!-- Feature 3 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-        
+       
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Mobile Ready</h4>
           <p class="text-gray-400 leading-relaxed">Book from anywhere, anytime. Our platform works seamlessly on all devices.</p>
         </div>
 
         <!-- Feature 4 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-        
+       
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Digital Tickets</h4>
           <p class="text-gray-400 leading-relaxed">Get instant digital tickets delivered to your email and phone. No need to print.</p>
         </div>
 
         <!-- Feature 5 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-        
+       
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Live Tracking</h4>
           <p class="text-gray-400 leading-relaxed">Track your bus in real-time and get live updates on arrival times and delays.</p>
         </div>
 
         <!-- Feature 6 -->
         <div class="glass-card p-8 rounded-2xl hover:transform hover:-translate-y-2 transition duration-300 group">
-        
+       
           <h4 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition">Best Prices</h4>
           <p class="text-gray-400 leading-relaxed">Compare prices across operators and get the best deals on your bus tickets.</p>
         </div>
@@ -318,7 +318,7 @@ $is_admin = $is_logged_in && !empty($_SESSION['is_admin']);
             Making traveling easier, faster, and more convenient for everyone.
           </p>
         </div>
-        
+       
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 text-center">
           <div>
             <div class="text-4xl font-bold gradient-text mb-2">1000+</div>
