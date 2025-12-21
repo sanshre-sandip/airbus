@@ -1,4 +1,6 @@
+-- =========================
 -- Create Database
+-- =========================
 CREATE DATABASE IF NOT EXISTS bus_booking
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_0900_ai_ci;
@@ -21,16 +23,18 @@ CREATE TABLE users (
 
 -- =========================
 -- Routes Table
+-- (Fare stored here only)
 -- =========================
 CREATE TABLE routes (
   id INT NOT NULL AUTO_INCREMENT,
   from_location VARCHAR(100) NOT NULL,
   to_location VARCHAR(100) NOT NULL,
-  departure_time TIME NOT NULL,
-  arrival_time TIME NOT NULL,
+  departure_datetime DATETIME NOT NULL,
+  arrival_datetime DATETIME NOT NULL,
   fare DECIMAL(10,2) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  INDEX idx_route_locations (from_location, to_location)
 ) ENGINE=InnoDB;
 
 -- =========================
@@ -42,7 +46,6 @@ CREATE TABLE buses (
   bus_number VARCHAR(50) NOT NULL,
   total_seats INT NOT NULL,
   route_id INT NOT NULL,
-  fare DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY bus_number (bus_number),
@@ -55,6 +58,7 @@ CREATE TABLE buses (
 
 -- =========================
 -- Bookings Table
+-- (Seat double-booking prevented)
 -- =========================
 CREATE TABLE bookings (
   id INT NOT NULL AUTO_INCREMENT,
@@ -66,17 +70,28 @@ CREATE TABLE bookings (
   status ENUM('pending','confirmed','cancelled') DEFAULT 'confirmed',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
+
+  -- Prevent same seat being booked twice
+  UNIQUE KEY unique_seat_booking (bus_id, booking_date, seat_number),
+
   KEY user_id (user_id),
   KEY bus_id (bus_id),
+  INDEX idx_booking_date (booking_date),
+
   CONSTRAINT bookings_ibfk_1
     FOREIGN KEY (user_id)
     REFERENCES users(id)
     ON DELETE CASCADE,
+
   CONSTRAINT bookings_ibfk_2
     FOREIGN KEY (bus_id)
     REFERENCES buses(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- =========================
+-- Insert Admin User
+-- =========================
 INSERT INTO users (name, email, password, is_admin)
 VALUES (
   'Admin',
